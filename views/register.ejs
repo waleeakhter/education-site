@@ -1,0 +1,136 @@
+
+<%- include('partials/header.ejs'); -%>
+
+<div class="home_searchbox ">
+    <div class="mask">
+        <div class="container">
+            <form  id="registerForm" class="row g-3 " >
+                <div class="col-md-8 col-lg-6 col-xl-5 mx-auto ">
+                    <div class="card card-body row gy-3 rounded-25">
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email"  name="email"
+                            value="" placeholder="Enter your valid email address" autocomplete="new-email">
+                            <div class="invalid-feedback">
+                                Enter your valid email address
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group has-validation">
+                                <input type="text" class="form-control" id="username" name="username"
+                                aria-describedby="passwordicon" placeholder="Enter your username"  
+                                autocomplete="off" aria-autocomplete="off" value="" autocomplete="new-text"> 
+                                <div class="invalid-feedback">
+                                    Please choose a username.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" value="" name="password"
+                            placeholder="Enter your passwprd" autocomplete="new-password" >
+                            <div class="invalid-feedback">
+                                Password Required
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="passwordconfirm" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="passwordconfirm" value=""  name="passwordconfirm"
+                            placeholder="Confirm your password" autocomplete="new-password" >
+                            <div class="invalid-feedback">
+                                Confirm password required
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <input class="btn btn-theme regBtn" type="submit" value="Register">
+                        </div>
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs'); -%>
+
+  
+    
+<div class="modal fade" id="onRegistrationModal" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center py-5">
+            <a href="/login" type="button" class="btn-close ms-auto position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></a>
+       <h3>Your Are Registerd Now</h3>
+       <p>On Registration you got <span class="badge theme-bg">5</span> views</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+
+              
+
+            $("#registerForm").submit(function (e) {
+			      e.preventDefault();
+                  $("#registerForm input").each(function () {
+                      if($(this).val() === ""){
+                          $(this).addClass("is-invalid");
+                          return false;
+                      }
+                  })
+               
+                     if($("#passwordconfirm").val() === $("#password").val()){
+                           $("#passwordconfirm").addClass("is-valid ").removeClass("is-invalid");
+                            $("#password").addClass("is-valid ")
+                      }else{
+                          $("#passwordconfirm").addClass("is-invalid").next("div").html("Password not matched");
+                          return false;
+                      }
+                  
+
+                const formData = {"email" : $("#email").val(),
+                                "username" : $("#username").val(),
+                                "password" : $("#password").val()};
+     
+				$.ajax({
+					type: "POST",
+					url: "/api/register",
+					data: formData,
+					dataType: 'JSON',
+                    async: true,
+                    crossDomain: true,
+                    headers: {
+                        "accept": "application/json",
+                        "Access-Control-Allow-Origin":"*"
+                    },
+                    
+					success: function(res){
+                        console.log(res.statusText);
+						if(res.statusText === 200){
+                              $("#onRegistrationModal").modal('show');
+                              $("#registerForm")[0].reset();
+                             setTimeout(function(){   
+                                 $("#onRegistrationModal").modal('hide');
+                                 window.location.href = "/login" 
+                                
+                                }, 5000);
+							
+						}
+
+					},
+					error: function (e) {
+						if(e.responseJSON.code === 11000){
+                            $("#email").addClass("is-invalid").next("div").html("Email Already Registered");
+                        }
+					}
+				});
+
+			}); 
+});
+</script>

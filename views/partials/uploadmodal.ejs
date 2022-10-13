@@ -1,0 +1,112 @@
+<div class="modal fade" id="uploaddocsearch" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-sm-scrollable modal-fullscreen-sm-down">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="d-flex justify-content-center mt-3">
+					<p>Select a document to upload</p>
+					<button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form id="fileUploadForm">
+					<div class="file-group">
+						<label for="uploaddoc">Upload File</label>
+						<input type="file" id="uploaddoc" accept=".pdf" name="uploaddoc" required="required" accept="application/pdf">
+					</div>
+					<p class="file_name"></p>
+
+					<div class="select__filters modal_filter row">
+						<div class="form-group text-center">
+							<input type="text" name="docname" id="docName" 
+							class="form-control  rounded-pill border-dark" 
+							placeholder="Document Name" required>
+							<label for="docName" class="ms-4 text-grey fs-6">Document Name</label>
+						</div>
+						<div class="form-group text-center">
+							<label for="doctypemodal">Doc Type</label>
+							<select name="doctype" id="doctypemodal" class="form-select modal_select"
+								required="required">
+								<option value="" class="d-none" selected>Select document type</option>
+								<% locals.docTypes.forEach(function(doctype){ %>
+									<option value=<%=doctype._id %>><%= doctype.name %>
+									</option>
+								<% }); %>
+							</select>
+						</div>
+						<div class="form-group text-center">
+							<label for="course_type_modal">Course Type</label>
+							<select name="course_type" id="course_type_modal" class="form-select modal_select"
+								required="required">
+								<option value="" class="d-none" selected>Select course type</option>
+								<%  locals.courseTypes.forEach(function(coursetype){ %>
+									<option value=<%=coursetype._id %>><%= coursetype.name %>
+									</option>
+								<% }); %>
+							</select>
+						</div>
+						<div class="form-group text-center">
+							<label for="university_modal">University</label>
+							<select name="university" id="university_modal" class="form-select modal_select"
+								required="required">
+								<option value="" class="d-none" selected>Select a university</option>
+								<% locals.univeristies.forEach(function(university){ %>
+									<option value=<%=university._id %>><%= university.name %>
+									</option>
+								<% }); %>
+							</select>
+						</div>
+					</div>
+                        <span id = "status"></span>
+					<div class="form-group text-center mb-4 ">
+						<button name="" class="btn btn-outline-dark" id="btnUploadFile" type="submit">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	 $(document).ready(function() {
+
+        $("#fileUploadForm").submit(function (e) {
+			   e.preventDefault();
+				var formData = new FormData(this);
+				$("#uploaddocsearch .modal-content").append(`<div class="preloader_modal"><div class="spinner"></div>`)
+				const token =  "<%= locals.token  %>"
+				$.ajax({
+					type: "POST",
+					url: "/uploadFile",
+					data: formData,
+					processData: false,
+					contentType: false,
+					dataType: 'JSON',
+                    headers: { Authorization: `Bearer ${token}` },
+					success: function(res){
+					    console.log(res);
+						if(res === 200){
+							toastr.success("File Uploaded Successfuly");
+							document.getElementById("fileUploadForm").reset();
+							$("#uploaddocsearch").modal("hide");
+							$('.modal select').val(null).trigger('change');
+							$(".preloader_modal").remove();
+							$(".file_name").html("");
+						}
+                        
+						if(res == 401){
+							$(".file_name").html("<p class='text-danger fs-5'> Only Pdf File Supported </p>");
+							$(".preloader_modal").remove();
+						}
+					
+
+					},
+					error: function (xhr) {
+						
+						if(xhr.status === 401){
+							window.location.href="/login"
+						}
+					}
+				});
+
+			}); 
+});
+</script>

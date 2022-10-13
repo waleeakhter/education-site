@@ -1,0 +1,305 @@
+<%- include('partials/header.ejs'); -%>
+
+<section class="browsingfile_section">
+    <div class="container-fluid">
+        <form id="filters_form">
+            <div class="row gy-4 align-items-center">
+                <div
+                    class="
+                        col-md-4 col-lg-2
+                        ms-auto
+                        order-md-1 order-2
+                        text-center text-md-right
+                    "
+                >
+                    <button
+                        type="submit"
+                        class="btn btn-outline-white search_btn"
+                    >
+                        Search
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-4 order-md-2 order-1">
+                    <div class="form-group white_input my-0">
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="filtersearch"
+                            id="search_input"
+                            placeholder="Enter a course name"
+                        />
+                        <label for="search_input" class="text-white-50"
+                            >Enter a course name</label
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="select__filters onpage_fillters row gy-5 mb-5">
+                <div class="form-group text-center">
+                    <label for="doctype">Doc Type</label>
+                    <select
+                        name="docType"
+                        id="doctype"
+                        class="form-select select2"
+                    >
+                        <option value="" class="d-none" selected>
+                            Select document type
+                        </option>
+                        <% if(locals.docTypes){
+                        docTypes.forEach(function(doctype){ %>
+                        <option value="<%= doctype._id%>">
+                            <%= doctype.name %>
+                        </option>
+                        <% }); } %>
+                    </select>
+                </div>
+                <div class="form-group text-center">
+                    <label for="courseType">Course Type</label>
+                    <select
+                        name="courseType"
+                        id="courseType"
+                        class="form-select select2"
+                    >
+                        <option value="" class="d-none" selected>
+                            Select course type
+                        </option>
+                        <% if(locals.courseTypes){
+                        courseTypes.forEach(function(coursetype){ %>
+                        <option value="<%= coursetype._id%>">
+                            <%= coursetype.name %>
+                        </option>
+                        <% }); } %>
+                    </select>
+                </div>
+                <div class="form-group text-center">
+                    <label for="university">University</label>
+                    <select
+                        name="university"
+                        id="university"
+                        class="form-select select2"
+                    >
+                        <option value="" class="d-none" selected>
+                            Select a university
+                        </option>
+
+                        <% if(locals.univeristies){
+                        univeristies.forEach(function(university){ %>
+                        <option value="<%= university._id %>">
+                            <%= university.name %>
+                        </option>
+                        <% }); } %>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid pt-5">
+        <div
+            class="col-md-5 mx-auto col-lg-4 col-xl-4 emptyField"
+            style="display: none"
+        >
+            <div
+                class="alert w-auto alert-primary alert-dismissible fade show"
+                role="alert"
+            >
+                Please select at least one <strong>Filter Option</strong>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+            </div>
+        </div>
+
+        <div id="resultMessage" class="text-center">
+            <% if(locals.resultMessage){ %>
+            <p class="lead"><%= resultMessage %></p>
+            <% } %>
+        </div>
+
+        <% if(locals.noResults){ %>
+        <div id="search_textwrapper" class="text-center">
+            <p><%= noResults %></p>
+        </div>
+        <% } %>
+
+        <div class="row gy-md-5 gy-4" id="doc_card_wrapper">
+            <% if(locals.searchResult){ %> <% searchResult.forEach(function(res
+            , i){ %>
+
+            <div class="col-xl-3 col-md-4 col-6">
+                <div class="card doc_card">
+                    <a href="/preview/<%= res._id %>" class="pdf_div">
+                        <img class="w-100" src="/<%= res.pdfImage %>" alt="" />
+                    </a>
+                    <div class="card-footer">
+                        <a href="/preview/<%= res._id %>"
+                            ><p class="card-title"><%= res.name %></p></a
+                        >
+                        <div class="small_text">
+                            <small><%= res.docType.name %></small>
+                            <span class="float-right"
+                                ><small>
+                                    Rating <% if(res.rating){ %>
+                                    <span>( <%= res.rating %>%)</span>
+                                    <% }else{ %>
+                                    <span>(0%)</span>
+                                    <% } %>
+                                </small></span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% }); %> <% } %>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer.ejs'); -%>
+
+<script type="text/javascript">
+    $('.onpage_fillters select').on('change', function (e) {
+        $('#filters_form').submit();
+    });
+    $('#filters_form').submit(function (e) {
+        e.preventDefault();
+        const searchKeyword = $('#search_input').val();
+        const courseType = $('#courseType').val();
+        const docType = $('#doctype').val();
+        const university = $('#university').val();
+        $('#doc_card_wrapper').html('');
+        $('#resultMessage').html('');
+        $('body').append(`<div class="preloader"><div class="spinner"></div>`);
+        var obj = {
+            searchKeyword: searchKeyword,
+            docType: docType,
+            courseType: courseType,
+            university: university
+        };
+        $.ajax({
+            type: 'POST',
+            data: obj,
+            url: '/filter',
+            dataType: 'JSON',
+            success: function (data) {
+                setTimeout(function () {
+                    $('.preloader').remove();
+                    console.log(data.searchResult);
+                    if (data.emptyField) {
+                        $('.emptyField').show();
+                    }
+                    if (
+                        (data.searchResult == null &&
+                            data.searchResult == undefined) ||
+                        data.emptyField
+                    ) {
+                        $('#doc_card_wrapper').html('');
+                        $('.emptyField').hide();
+                    } else {
+                        $('.emptyField').hide();
+
+                        localStorage.setItem(
+                            'searchResult',
+                            JSON.stringify(data.searchResult)
+                        );
+                        localStorage.setItem(
+                            'resultMessage',
+                            JSON.stringify(data.resultMessage)
+                        );
+
+                        data.searchResult.forEach(function (item) {
+                            $(
+                                '#doc_card_wrapper'
+                            ).append(`<div class="col-xl-3 col-md-4  col-6">
+                                                                            <div class="card doc_card">
+                                                                                <a href="/preview/${
+                                                                                    item._id
+                                                                                }" class="pdf_div">
+                                                                                    <img class="w-100" src="/${
+                                                                                        item.pdfImage
+                                                                                    }" >
+                                                                                    
+                                                                                </a>  
+                                                                                <div class="card-footer">
+                                                                                    <a href="/preview/${
+                                                                                        item._id
+                                                                                    }"><p class="card-title">${item.name}</p></a> 
+                                                                                    <div class="small_text">
+                                                                                        <small>${
+                                                                                            item
+                                                                                                .docType
+                                                                                                .name
+                                                                                        }</small>
+                                                                                        <span class="float-right"><small> Rating 
+                                                                                            ( ${
+                                                                                                item.rating
+                                                                                                    ? item.rating
+                                                                                                    : 0
+                                                                                            }%)
+                                                                                        </small></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>`);
+                        });
+                    }
+                    $('#resultMessage').html(
+                        `<p class='lead'>${data.resultMessage} </p>`
+                    );
+                }, 3000);
+            },
+            error: function (xhr, error) {
+                if (xhr.status === 401) {
+                    toastr.error('Login First');
+                }
+            }
+        });
+    });
+    let docList = localStorage.getItem('searchResult');
+    docList = JSON.parse(docList);
+
+    if (localStorage.getItem('searchResult')) {
+        $('#resultMessage').html(
+            `<p class='lead'>${localStorage.getItem('resultMessage')} </p>`
+        );
+        docList.forEach(function (item) {
+            $(
+                '#doc_card_wrapper'
+            ).append(`<div class="col-xl-3 col-md-4  col-6">
+                                                                            <div class="card doc_card">
+                                                                                <a href="/preview/${
+                                                                                    item._id
+                                                                                }" class="pdf_div">
+                                                                                    <img class="w-100" src="/${
+                                                                                        item.pdfImage
+                                                                                    }" >
+                                                                                    
+                                                                                </a>  
+                                                                                <div class="card-footer">
+                                                                                    <a href="/preview/${
+                                                                                        item._id
+                                                                                    }"><p class="card-title">${item.name}</p></a> 
+                                                                                    <div class="small_text">
+                                                                                        <small>${
+                                                                                            item
+                                                                                                .docType
+                                                                                                .name
+                                                                                        }</small>
+                                                                                        <span class="float-right"><small> Rating 
+                                                                                            ( ${
+                                                                                                item.rating
+                                                                                                    ? item.rating
+                                                                                                    : 0
+                                                                                            }%)
+                                                                                        </small></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>`);
+        });
+    }
+</script>

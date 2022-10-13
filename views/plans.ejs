@@ -1,0 +1,168 @@
+<%- include('partials/header.ejs'); -%>
+
+<section class="browsingfile_section">
+    <div class="container">
+        <div class="row gy-4 justify-content-center">
+            <div class="plan_heading text-center mb-5">
+                <h1 class="fs-1 text-white fw-light">
+                    Choose the plan that works for you
+                </h1>
+            </div>
+            <% plans.forEach(function(plan){ %>
+            <div class="col-md-4 col-xl-3 col-9">
+                <div class="card plan_card text-center">
+                    <div class="theme-bg py-4 rounded-top">
+                        <p class="card-title fw-bold fs-5 mb-0 text-white">
+                            <%= plan.name %>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h2 class="card-title mb-0 lh-1">
+                                    $<%= plan.price %>
+                                </h2>
+                                <small>per month</small>
+                            </li>
+                            <li class="list-group-item">
+                                <%= plan.views %> Views
+                            </li>
+                            <li class="list-group-item">
+                                Billed <% if(plan.months != null) { %>
+                                <span
+                                    >$<%= (plan.price * plan.months).toFixed(2)
+                                    -%></span
+                                >
+
+                                <% } %> every <br />
+                                months
+                            </li>
+                            <li class="list-group-item">
+                                <% if(locals.user.plan === "" || locals.user.plan == null)
+                                {  %>
+                                 <button
+                                    class="
+                                        btn btn-outline-primary
+                                        mt-2
+                                        selectPlan
+                                    "
+                                    plan-id="<%= plan._id %>"
+                                    plan-name="<%= plan.name %>"
+                                    plan-price="<%= plan.price %>"
+                                    plan-months="<%= plan.months %>"
+                                >
+                                    Select Plan
+                                </button>
+                              <% } else { %>
+                                
+                                <button
+                                   type="button"
+                                    class="
+                                        btn btn-primary
+                                        mt-2
+                                        
+                                        <%= plan.name === locals.user.plan ? 'active ' : 'd-none'  %>
+                                    "
+                                     data-bs-toggle="tooltip" title="Your Selected Plan"
+                                > 
+                                    Selected Plan
+                                </button>
+                             
+                                
+                                <% }  %>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+
+        <div
+            class="
+                upload_your_doc
+                p-2
+                bg-gradient
+                rounded-pill
+                my-5
+                text-center
+                card
+                col-md-6
+                mx-auto
+            "
+        >
+            <p class="text-dark lead mb-0">
+                Or,
+                <a
+                    href="javascript:void(0)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#uploadstudydoc"
+                    class="text-theme text-decoration-none"
+                    >Upload your study documents</a
+                >
+                to get access
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- upload own documents modal -->
+<div
+    class="modal fade"
+    id="uploadstudydoc"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div
+        class="
+            modal-dialog
+            modal-dialog-centered
+            modal-dialog-sm-scrollable
+            modal-fullscreen-sm-down
+        "
+    >
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container">
+                    <div class="uoload_img">
+                        <img src="assets/images/upload-file.svg" alt="" />
+                    </div>
+                    <h1 class="fs-4 text-center mt-5">
+                        Upload Documents to Course Hero!
+                    </h1>
+                    <p class="fs-6">
+                        Upload your original study materials to help other
+                        students learn. You'll earn free unlocks for sharing
+                        your knowledge.
+                    </p>
+
+                    <div
+                        class="
+                            d-flex
+                            flex-wrap
+                            justify-content-center
+                            mt-5
+                            mb-4
+                        "
+                    >
+                        <a
+                            class="btn btn-theme"
+                            data-bs-target="#uploaddocsearch"
+                            data-bs-toggle="modal"
+                            data-bs-dismiss="modal"
+                        >
+                            Upload Now
+                        </a>
+                        <a class="btn btn-light ms-3" data-bs-dismiss="modal">
+                            No Thanks
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer'); -%>
+<%- include('partials/paymentmodal'); -%>

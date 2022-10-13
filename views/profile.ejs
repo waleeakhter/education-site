@@ -1,0 +1,332 @@
+<%- include('partials/header.ejs'); -%>
+
+<section class="browsingfile_section position-relative">
+    <div class="container sticky-top">
+        <div class="row">
+            <div class="col-12 col-xl-10 mx-auto">
+                <div class="card shadow-lg profile_main_card  overflow-hidden border-white">
+                    <div class="theme-bg py-5"></div>
+                    <div class="card-body">
+                        <div class="profile_div">
+                            <div class="profile_image">
+                                <label for="profile_image" class=" position-relative">
+                                     <% if (locals.user.profileImage){ %>
+                                    <img src="/profiles/<%= user.profileImage %>"  class="profile_img" alt="">
+                                     <% }else { %>
+
+                                        <img src="/assets/images/imgplaceholder.png" class="profile_img" alt="">
+
+                                     <% } %>}
+                                    <span class="badge theme-bg"><i class="fas fa-camera "></i></span>
+                                </label>
+                                
+                            </div>
+                            <% if (locals.user){ %>
+                                <p class="lead mb-0 userName__"> <%= user.userName %> </p>
+                                <small><%= user.email %></small>
+                                <p > <small> Free Views: </small> <span class="badge theme-bg"><%= user.views %></span>  
+                                  &nbsp;  | &nbsp;<small> Plan Views: </small> <span class="badge theme-bg"><%= user.planViews %></span></p>
+                                 
+                                
+                                <% } %>
+                                <hr class="mb-0">
+                                <div class="row">
+                                    <div class="col-md-4   border-end">
+                                        <div class="nav flex-column nav-pills mt-3" id="v-pills-tab" 
+                                        role="tablist" aria-orientation="vertical">
+                                        
+                                        <button class="nav-link active" id="v-pills-profile-tab" 
+                                        data-bs-toggle="pill" data-bs-target="#v-pills-profile" 
+                                        type="button" role="tab" aria-controls="v-pills-profile" 
+                                        aria-selected="false">Profile</button>
+                                        
+                                        <button class="nav-link" id="v-pills-document-tab" 
+                                        data-bs-toggle="pill" data-bs-target="#v-pills-document" 
+                                        type="button" role="tab" aria-controls="v-pills-document" 
+                                        aria-selected="false">Documents</button>
+                                        
+                                        <button class="nav-link" id="v-pills-package-tab" 
+                                        data-bs-toggle="pill" data-bs-target="#v-pills-package"
+                                        type="button" role="tab" aria-controls="v-pills-package"
+                                        aria-selected="false">Package</button>
+
+                                         <button class="nav-link" id="v-pills-viewdoc-tab" 
+                                        data-bs-toggle="pill" data-bs-target="#v-pills-viewdoc"
+                                        type="button" role="tab" aria-controls="v-pills-viewdoc"
+                                        aria-selected="false">Viewed documents</button>
+                                    </div>
+                                </div>
+                            <div class="col-md-8">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" 
+                                        aria-labelledby="v-pills-profile-tab">
+                                        <h1 class="fs-5 mt-3 mb-5 text-start">Profile Update</h1>
+                                        
+
+                                        <div class="alert alert-primary d-none justify-content-center  align-items-center onUpdate" role="alert">
+                                            <i class="fas fa-check-circle fs-4 flex-shrink-0 me-2" role="img" aria-label="Success:"></i>
+                                            <div>
+                                               Profile Update Successfully!
+                                            </div>
+                                        </div>
+                                        <form  id="profileUpdateForm"  enctype="multipart/form-data" autocomplete="off" >
+                                            <label for="username" class="form-label d-flex text-start">Change Username</label>
+                                            <div class="form-group mb-4">
+                                                   <% if (locals.user.userName){ %>
+                                                       <input type="text" name="username" class="form-control" placeholder="password" id="username" required value= "<%= user.userName %>"  />
+                                                    <% } %>
+                                                    <label for="username">Your Username</label>
+                                                </div>
+                                                 <input type="file" name="profile_image" id="profile_image" onchange="readURL(this);"  class="d-none">
+                                                    <hr>
+                                                <label for="changepassword" class="form-label d-flex text-start">Old Password</label>
+                                                <div class="form-group mb-2">
+                                                    <input type="password" name="oldpassword" class="form-control" placeholder="password" id="oldpassword" autocomplete="new-password">
+                                                    <label for="oldpassword">Enter Your Old Password</label>
+                                                </div>
+                                                <label for="changepassword" class="form-label d-flex text-start">New Password</label>
+                                                <div class="form-group  mb-2">
+                                                    <input type="password" name="newpassword" class="form-control" placeholder="password" id="newpassword">
+                                                    <label for="newpassword">Enter Your New Password</label>
+                                                </div>
+
+                                                <label for="changepassword" class="form-label d-flex text-start">Confirm Password</label>
+                                                <div class="form-group  mb-2">
+                                                    <input type="password" name="confirmnewpassword" class="form-control" placeholder="password" id="confirmNewPassword">
+                                                    <label for="confirmNewPassword">Confirm Your New Password</label>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn theme-bg text-white mt-4 form_btn">Save</button>
+                                                </div>
+                                            </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-document" role="tabpanel" 
+                                        aria-labelledby="v-pills-document-tab">
+                                        <div class="table-responsive document_table">
+                                            <table class="table  w-100">
+                                                <thead class="sticky-top bg-white">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Course type</th>
+                                                        <th scope="col">Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(locals.planRoute.getFiles.length > 0) { %>
+                                                        <% planRoute. getFiles.forEach(function(file , index){ %>
+                                                    <tr>
+                                                        <th scope="row"><%= index+1 %></th>
+                                                        <td><a download href="<%= file.file %>"> <%= file.name %> </a></td>
+                                                        <td><%= file.courseType.name %></td>
+                                                        <td><%=   moment(file.createdAt).format('DD-MM-YYYY') %></td>
+                                                    </tr>
+                                                     <% }); %>
+                                                    <%  } else{ %>
+
+                                                        <tr>
+                                                            <td colspan="7" class="text-center">
+                                                                 <p class="lead mt-4">No File Uploaded</p>
+
+                                                                 <a class="btn btn-theme mb-2" href="javascript:void(0)" data-bs-toggle="modal" 
+                                                                  data-bs-target="#uploaddocsearch">Upload Documents</a>
+                                                            </td>
+                                                        </tr>
+                                                      <%  } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-package" role="tabpanel" aria-labelledby="v-pills-package-tab">
+                                        <div class="col-md-6  col-xl-5 mx-auto mt-4">
+                                             <% if(locals.planRoute.selectedPlan !== null){ 
+                                                 if(Object.keys(locals.planRoute.selectedPlan).length > 0) {
+                                                const plan = locals.planRoute.selectedPlan;
+                                                %>
+                                            <div class="card">
+                                                <div class="theme-bg py-4">
+                                                    <p class="card-title mb-0 text-white"><%= plan.name %></p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item">
+                                                            <h2 class="card-title mb-0 lh-1">$<%= plan.price %></h2>
+                                                            <small>per month</small>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <%= plan.views * plan.months %> Views
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            Billed $ <%= (plan.price * plan.months).toFixed(2) %> every <%= plan.months %> months
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- <div class="form-group mt-4">
+                                                <a href="/plans" class="btn btn-theme "> Change Plan </a>
+                                            </div> -->
+                                             <% } }else { %>
+                                            <div class="form-group mt-4">
+                                                
+                                                 <p class="lead mt-4">No Plan Subscribed</p>
+                                                <a href="/plans" class="btn btn-theme "> Select Plan </a>
+                                            </div>
+                                                  <% } %>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="v-pills-viewdoc" role="tabpanel" aria-labelledby="v-pills-viewdoc-tab">
+                                       
+                                             <% if(locals.planRoute.getViewDoc.length > 0) { %>
+                                            <table class="table  w-100">
+                                                <thead class="sticky-top bg-white">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Expire Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(locals.planRoute.getViewDoc.length > 0) { %>
+                                                        <% planRoute.getViewDoc.forEach(function(doc , index){ %>
+                                                    <tr>
+                                                        <th scope="row"><%= index+1 %></th>
+                                                        <td><a  href="/fullDocument/<%= doc.pdfId._id %>" target="_blank"> <%= doc.pdfId.name %> </a></td>
+                                                        <td><%=   moment(doc.__ttl).format('YYYY-MM-DD (hh:mm:ss A)') %></td>
+                                                    </tr>
+                                                     <% }); %>
+                                                    <%  } else{ %>
+
+                                                        <tr>
+                                                            <td colspan="7" class="text-center">
+                                                                 <p class="lead mt-4">No File Uploaded</p>
+
+                                                                 <a class="btn btn-theme mb-2" href="javascript:void(0)" data-bs-toggle="modal" 
+                                                                  data-bs-target="#uploaddocsearch">Upload Documents</a>
+                                                            </td>
+                                                        </tr>
+                                                      <%  } %>
+                                                </tbody>
+                                            </table>
+                                             <% }else { %>
+                                            <div class="form-group mt-4">
+                                                
+                                                 <p class="lead mt-4">Your Viewed Documents</p>
+                                            </div>
+                                                  <% } %>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<%- include('partials/footer.ejs'); -%>
+<script>
+    
+    
+
+    function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile_img')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        $("#profileUpdateForm").submit(function (e) {
+			   e.preventDefault();
+				var formData = new FormData(this);
+				const token =  "<%= locals.token  %>";
+                $("#profileUpdateForm input ").removeClass("is-invalid");
+                $(".form_btn").addClass("spinning").attr("disabled" , "disabled");
+				$.ajax({
+                        type: "POST",
+                        url: "/updateUser",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: 'JSON',
+                        headers: { Authorization: `Bearer ${token}` },
+                        success: function(res){
+                        if(res.fileTypeErr){
+                          toastr.error(res.fileTypeErr);
+                        }
+						if(res.message === true){
+                            $('.onUpdate').addClass('d-flex').removeClass("d-none");
+                            $("#profileUpdateForm input ").val("");
+
+                            if(res.data.userName){
+                               $("#username").val(res.data.userName);
+                              $(".userName__").html(res.data.userName);
+                            }
+                            if(res.data.profileImage){
+                               $(".profile_img ").attr("src" ,"/profiles/"+res.data.profileImage);
+                               $(".profile_dropdown img").attr("src" ,"/profiles/"+res.data.profileImage);
+                              
+                            }
+                            setTimeout(function(){ 
+                                $('.onUpdate').removeClass('d-flex').addClass("d-none"); 
+                            }, 4000);
+						}
+
+                        if(res.oldpassword === false || res.oldPasswordReq === true){
+                               $("#oldpassword").addClass("is-invalid");
+                               $("#oldpassword~label").html(res.Message);
+                        }
+
+                        if(res.passwordMisMatch === false || res.confirmNewPasswordReq === true){
+                               $("#confirmNewPassword").addClass("is-invalid");
+                               $("#confirmNewPassword~label").html(res.Message);
+                        }
+
+                        if(res.PasswordSame === true){
+                               $("#oldpassword").addClass("is-invalid");
+                               $("#oldpassword~label").html(res.Message);
+                               $("#newpassword").addClass("is-invalid");
+                               $("#newpassword~label").html(res.Message);
+                        }
+
+                        if(res.PasswordSame === true){
+                               $("#oldpassword").addClass("is-invalid");
+                               $("#oldpassword~label").html(res.Message);
+                               $("#newpassword").addClass("is-invalid").attr("isvalid" , "false");
+                               $("#newpassword~label").html(res.Message);
+                        }
+                        
+                        if (res.newPasswordReq === true) {
+                            $("#newpassword").addClass("is-invalid");
+                            $("#newpassword~label").html(res.Message);
+                        }
+
+                        if (res.userNameReq === true) {
+                            $("#username").addClass("is-invalid");
+                            $("#username~label").html(res.Message);
+                        }
+					
+                          
+                        $(".form_btn").removeClass("spinning").removeAttr("disabled" , "disabled"); 
+					},
+					error: function (xhr) {
+						 
+						if(xhr.status === 401){
+							window.location.href="/login"
+						}
+					}
+				});
+
+			}); 
+</script>

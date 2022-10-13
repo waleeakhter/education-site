@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous Educational</title>
+    <link rel="shortcut icon" href="assets/images/logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/all.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/select2/select2.min.css">
+    <link rel="stylesheet" href="assets/css/customstyle.css">
+</head>
+<body style="background-image: url(assets/images/bg.jpeg)">
+    <!-- =============header============= -->
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark bg-transparent">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#themenavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon  "></span>
+                </button>
+                <div class="collapse navbar-collapse" id="themenavbar">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="browsingfile.html">Browse Documents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" 
+                            data-bs-target="#uploaddocsearch">Upload Documents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html" >Main Menu</a>
+                        </li>
+                        <li class="nav-item">
+                        </li>
+                    </ul>
+                </div>
+                <div class="profile_dropdown">
+                    <div class="btn-group ">
+                        <a class="nav-link dropdown-toggle text-white" href="#" 
+                        data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        <img src="assets/images/profile-image.jpg" alt="">
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a href="profile.html" class="dropdown-item" type="button">Profile</a></li>
+                        <li><a class="dropdown-item" type="button">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar-brand">
+                 <a >
+                        Notah <img src="assets/images/logo.svg" alt="">
+                    </a>
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- =============overlay blue color============= -->
+<div class="overlaycolor"></div>
+
+<section class="browsingfile_section">
+    <div class="container-fluid">
+        <div class="row gy-4 align-items-center">
+            <div class="col-md-4 col-lg-2 ms-auto order-md-1 order-2 text-center text-md-right"> 
+                <button class="btn btn-outline-white search_btn"> Search</button>
+            </div>
+            <div class="col-md-6 col-lg-4 order-md-2 order-1">
+                <div class="form-group white_input my-0 ">
+                    <input type="text" class="form-control" id="search_input" placeholder="BIO-323 Assignment 2" >
+                    <label for="search_input">Search</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="select__filters onpage_fillters  row gy-5 mb-5">
+            
+            <div class="form-group text-center">
+                <label for="doctype">Doc Type</label>
+                <select name="doctype" id="doctype" class="form-select select2" >
+                    <option value="" class="d-none" selected>Select document type</option>
+                    <option value="1">Quiz</option>
+                    <option value="2">Test Prep</option>
+                    <option value="3">Exams</option>
+                    <option value="4">Lab</option>
+                    <option value="5">Homework</option>
+                    <option value="6">Notes</option>
+                    <option value="7">Other</option>
+                </select>
+            </div>
+            <div class="form-group text-center">
+                <label for="course_type">Course Type</label>
+                <select name="course_type" id="course_type" class="form-select select2" >
+                    <option value="" class="d-none" selected>Select course type</option>
+                            <option value="1">Math</option>
+                            <option value="2">Biology</option>
+                            <option value="3">Chemistry</option>
+                            <option value="4">Biochemistry</option>
+                            <option value="5">Engineering</option>
+                            <option value="6">Finance</option>
+                            <option value="7">Accounting</option>
+                            <option value="8">Business Management</option>
+                            <option value="9">Law</option>
+                            <option value="10">Computer Science</option>
+                            <option value="11">Medicine</option>
+                            <option value="12">Pharmacy</option>
+                            <option value="13">Physical Therapy</option>
+                            <option value="14">Radiology</option>
+                            <option value="15">Physics</option>
+                            <option value="16">Dentistry</option>
+                            <option value="17">Social Science</option>
+                </select>
+            </div>
+            <div class="form-group text-center">
+                <label for="university">University</label>
+                <select name="university" id="university" class="form-select select2" >
+                    <option value="" class="d-none" selected>Select a  university</option>
+                    <option value="1">King Abdulaziz University</option>
+                    <option value="2">University of Jeddah</option>
+                    <option value="3">KSAU-HS</option>
+                    <option value="4">University of Business and Technology</option>
+                    <option value="5">Dar Al-Uloom University</option>
+                    <option value="6">Umm Al-Qura University</option>
+                    <option value="7">Effat University</option>
+                    <option value="8">Dar Al-Hekma University</option>
+                    <option value="9">Taif University</option>
+                    <option value="10">Islamic University of Madina</option>
+                    <option value="11">Prince Mugrin University</option>
+                    <option value="12">King Saud University </option>
+                    <option value="13">King Fahd University</option>
+                    <option value="14">Imam Abdulrahman Bin Faisal University</option>
+                    <option value="15">University College of Jubail</option>
+                    <option value="16">Prince Sultan University </option>
+                    <option value="17">AlFaisal University</option>
+                    <option value="18">Majmaah University</option>
+                    <option value="19">Shaqra University</option>
+                    <option value="20">Jazan University</option>
+                    <option value="21">King Khalid University</option>
+                    <option value="22">Tabuk University Najran University</option>
+                    <option value="23">Al-Baha University</option>
+                </select>
+            </div>
+        </div> 
+    </div>
+    <div class="container-fluid pt-5">
+        <div id="search_textwrapper" class="text-center" style="display: none;">
+            <p>Search results for “Math 101 Quiz 1”:</p>
+        </div>
+        <div class="row gy-md-5 gy-4" id="doc_card_wrapper" style="display: none">
+            
+            <div class="col-xl-3 col-md-4  col-6">
+                <div class="card doc_card">
+                    <a href="docpreview.html">
+                        <div id="pdfview"></div>
+                    </a>  
+                    <div class="card-footer">
+                        <a href="docpreview.html"><p class="card-title">Math 101 Quiz 1</p></a> 
+                        <div class="small_text">
+                            <small>Quiz</small>
+                            <span class="float-right"><small> Rating (3%)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4  col-6">
+                <div class="card doc_card">
+                    <a href="docpreview.html">
+                        <div id="pdfview"></div>
+                    </a>  
+                    <div class="card-footer">
+                        <a href="docpreview.html"><p class="card-title">Math 101 Quiz 1</p></a> 
+                        <div class="small_text">
+                            <small>Quiz</small>
+                            <span class="float-right"><small> Rating (3%)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4  col-6">
+                <div class="card doc_card">
+                    <a href="docpreview.html">
+                        <div id="pdfview"></div>
+                    </a>  
+                    <div class="card-footer">
+                        <a href="docpreview.html"><p class="card-title">Math 101 Quiz 1</p></a> 
+                        <div class="small_text">
+                            <small>Quiz</small>
+                            <span class="float-right"><small> Rating (3%)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4  col-6">
+                <div class="card doc_card">
+                    <a href="docpreview.html">
+                        <div id="pdfview"></div>
+                    </a>  
+                    <div class="card-footer">
+                        <a href="docpreview.html"><p class="card-title">Math 101 Quiz 1</p></a> 
+                        <div class="small_text">
+                            <small>Quiz</small>
+                            <span class="float-right"><small> Rating (3%)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4  col-6">
+                <div class="card doc_card">
+                    <a href="docpreview.html">
+                        <div id="pdfview"></div>
+                    </a>  
+                    <div class="card-footer">
+                        <a href="docpreview.html"><p class="card-title">Math 101 Quiz 1</p></a> 
+                        <div class="small_text">
+                            <small>Quiz</small>
+                            <span class="float-right"><small> Rating (3%)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<footer class="footer theme-bg py-3 mt-5 text-center fixed-bottom">
+    <p class="lead text-white mb-0">© Copyright 2021 Anonymous Educational Inc. All Rights Reserved</p>
+</footer>
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="assets/select2/select2.full.min.js"></script>
+<script type="text/javascript" src="assets/js/theme.js"></script>
+
+
+<div class="modal fade" id="uploaddocsearch" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered modal-dialog-sm-scrollable modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-center mt-3">
+                    <p>Select a document to upload</p>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="file-group">
+                    <label for="uploaddoc">Upload File</label>
+                    <input type="file" id="uploaddoc" 
+                    accept=".pdf,.doc,.docx,application/msword,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                </div>
+                <p class="file_name"></p>
+
+                <div class="select__filters modal_filter row">
+                    <div class="form-group text-center">
+                        <label for="doctypemodal">Doc Type</label>
+                        <select name="doctype" id="doctypemodal" class="form-select modal_select" >
+                            <option value="" class="d-none" selected>Select document type</option>
+                            <option value="1">Quiz</option>
+                            <option value="2">Test Prep</option>
+                            <option value="3">Exams</option>
+                            <option value="4">Lab</option>
+                            <option value="5">Homework</option>
+                            <option value="6">Notes</option>
+                            <option value="7">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <label for="course_type_modal">Course Type</label>
+                        <select name="course_type" id="course_type_modal" class="form-select modal_select" >
+                            <option value="" class="d-none" selected>Select course type</option>
+                            <option value="" class="d-none" selected>Select course type</option>
+                            <option value="1">Math</option>
+                            <option value="2">Biology</option>
+                            <option value="3">Chemistry</option>
+                            <option value="4">Biochemistry</option>
+                            <option value="5">Engineering</option>
+                            <option value="6">Finance</option>
+                            <option value="7">Accounting</option>
+                            <option value="8">Business Management</option>
+                            <option value="9">Law</option>
+                            <option value="10">Computer Science</option>
+                            <option value="11">Medicine</option>
+                            <option value="12">Pharmacy</option>
+                            <option value="13">Physical Therapy</option>
+                            <option value="14">Radiology</option>
+                            <option value="15">Physics</option>
+                            <option value="16">Dentistry</option>
+                            <option value="17">Social Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <label for="university_modal">University</label>
+                        <select name="university" id="university_modal" class="form-select modal_select" >
+                            <option value="" class="d-none" selected>Select a university</option>
+                            <option value="1">King Abdulaziz University</option>
+                            <option value="2">University of Jeddah</option>
+                            <option value="3">KSAU-HS</option>
+                            <option value="4">University of Business and Technology</option>
+                            <option value="5">Dar Al-Uloom University</option>
+                            <option value="6">Umm Al-Qura University</option>
+                            <option value="7">Effat University</option>
+                            <option value="8">Dar Al-Hekma University</option>
+                            <option value="9">Taif University</option>
+                            <option value="10">Islamic University of Madina</option>
+                            <option value="11">Prince Mugrin University</option>
+                            <option value="12">King Saud University </option>
+                            <option value="13">King Fahd University</option>
+                            <option value="14">Imam Abdulrahman Bin Faisal University</option>
+                            <option value="15">University College of Jubail</option>
+                            <option value="16">Prince Sultan University </option>
+                            <option value="17">AlFaisal University</option>
+                            <option value="18">Majmaah University</option>
+                            <option value="19">Shaqra University</option>
+                            <option value="20">Jazan University</option>
+                            <option value="21">King Khalid University</option>
+                            <option value="22">Tabuk University Najran University</option>
+                            <option value="23">Al-Baha University</option>
+                        </select>
+                    </div>
+                </div> 
+
+                <div class="form-group text-center mb-4 ">
+                    <button name="" class="btn btn-outline-dark" type="button" >Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

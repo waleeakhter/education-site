@@ -1,0 +1,52 @@
+<%- include('partials/header.ejs'); -%>
+
+<div class="home_searchbox">
+    <div class="mask">
+        <div class="container">
+            <div class="typography">
+                <h1>Make your studies simpler</h1>
+                <p>Build your future with us</p>
+            </div>
+            <div class="card searchbox_card">
+                <div class="card-body">
+                    <!-- <div class="filters_list">
+                            <a class="btn btn-flat" data-name="quizzes" href="javascript:void(0)">Quizzes</a>
+                            <a class="btn btn-flat" data-name="exams" href="javascript:void(0)">Exams</a>
+                            <a class="btn btn-flat" data-name="course" href="javascript:void(0)">Course</a>
+                            <a class="btn btn-flat" data-name="assignment" href="javascript:void(0)">Assignment</a>
+                        </div> -->
+                    <h3 class="text-center">Find study resources</h3>
+                    <form action="/search" method="POST">
+                        <div class="form-group search_input mb-3 mt-4">
+                            <input
+                                type="text"
+                                name="searchkeywords"
+                                class="form-control"
+                                id="homesearchinput"
+                                placeholder="BIO-323 Assignment 2"
+                                value=""
+                                required
+                            />
+                            <label for="homesearchinput" class="text-black-50"
+                                >Enter a course name</label
+                            >
+                        </div>
+                        <div class="invalid-feedback mb-2 mt-2 text-center">
+                            Please Enter Your Search Keywords.
+                        </div>
+                        <div class="form-group text-center">
+                            <button
+                                type="submit"
+                                class="btn homesearch_btn btn-outline-dark"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs'); -%>

@@ -1,0 +1,252 @@
+<%- include('partials/header.ejs'); -%>
+<section class="browsingfile_section position-relative">
+  <div class="container sticky-top">
+    <!-- <nav aria-label="breadcrumb">
+            <ol class="breadcrumb docpreview">
+                <li class="breadcrumb-item"><% if(locals.getFile) { %>
+                <a href="javascript:void(0)" class="breadcrumbClick university"><%= getFile.university.name %></a>
+                <% } %>
+                </li>
+                <li class="breadcrumb-item">
+                <% if(locals.getFile) { %>
+                <a href="javascript:void(0)" class="breadcrumbClick courseType"><%= getFile.courseType.name %></a>
+                <% } %>    
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"> 
+                <% if(locals.getFile) { %>
+                <a href="javascript:void(0)" class="breadcrumbClick docType"><%= getFile.docType.name %></a>
+                <% } %>    
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                <% if(locals.getFile) { %>
+                <a><%= getFile.name %></a>
+                <% } %>
+                </li>
+            </ol>
+        </nav> -->
+    <% if(locals.getFile) { %>
+    <h1 class="fs-2 text-capitalize text-white"><%= getFile.name %></h1>
+    <% } %>
+
+    <div class="detail_box">
+      <div class="text_box">
+        <p>University</p>
+        <% if(locals.getFile) { %>
+        <p><%= getFile.university.name %></p>
+        <% } %>
+      </div>
+      <div class="text_box">
+        <p>Course Type</p>
+        <% if(locals.getFile) { %>
+        <p><%= getFile.courseType.name %></p>
+        <% } %>
+      </div>
+      <div class="text_box">
+        <p>Document Type</p>
+        <% if(locals.getFile) { %>
+        <p><%= getFile.docType.name %></p>
+        <% } %>
+      </div>
+      <div class="text_box">
+        <p>Uploaded By</p>
+        <% if(locals.getFile) { %>
+        <p><%= getFile.uploadBy.userName %></p>
+        <% } %>
+      </div>
+      <div class="text_box">
+        <p>Ratings</p>
+        <div class="rating_div">
+          <p class="like me-3">
+            <a
+              href="javascript:void(0)"
+              class="rating_btn"
+              pdf-id="<%= getFile._id %>"
+              data-type="1"
+              ><img src="/assets/images/thumb-up.svg" alt=""
+            /></a>
+            &nbsp;<span id="likes">(<%= locals.totalLikes %>)</span>
+          </p>
+
+          <p class="dislikes">
+            <a
+              href="javascript:void(0)"
+              class="rating_btn"
+              pdf-id="<%= getFile._id %>"
+              data-type="0"
+              ><img src="/assets/images/thumb-down.svg" alt=""
+            /></a>
+            &nbsp;<span id="dislikes">(<%= locals.totalDisLikes %>)</span>
+          </p>
+        </div>
+      </div>
+      <% if(locals.user) { %>
+      <div class="text_box">
+        <p>Remaining Views</p>
+        <p><%= locals.user.views %></p>
+      </div>
+      <% } %>
+    </div>
+    <div class="row">
+      <div class="col-12 col-xl-10 mx-auto">
+        <div class="form-group mb-3 text-end">
+          <a class="btn btn-dark shadow docViewBtn" href="javascript:void(0)"
+            >View full document</a
+          >
+        </div>
+        <div
+          class="card shadow-lg profile_main_card overflow-hidden border-white"
+        >
+          <div
+            id="adobe-dc-view"
+            class="p-sm-5"
+            style="height: 500px; width: 100%"
+          >
+            <% if(locals.getFile) { %>
+            <img src="/<%= locals.getFile.pdfImage %>" class="w-100" alt="" />
+            <% } %>
+          </div>
+          <div class="blockmask">
+            <div class="blocktext">
+              <p>
+                <i class="fas fa-lock"></i> Get answer to your question and much
+                more.
+                <i class="fas fa-arrow-right"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div
+  class="modal fade"
+  id="planmodal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <button
+        type="button"
+        class="btn-close ms-auto mt-2 me-2"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+      <div class="modal-body py-5 text-center">
+        <p>
+          If you want to read full document, Please select your subscription
+          plan
+        </p>
+
+        <a
+          href="/plans"
+          class="btn btn-theme buyPlan"
+          doc-id="<%= getFile._id %>"
+          >Buy Plan</a
+        >
+        <a
+          class="btn btn-dark selectPlan"
+          plan-name="One Time"
+          plan-price="2"
+          plan-months="1"
+          doc-id="<%= getFile._id %>"
+          >One-time Payment</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer.ejs'); -%>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="loginalert"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body px-4 py-5">
+        <button
+          type="button"
+          class="btn-close position-absolute end-0 top-0 m-3"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+        <p class="lead mt-3 text-center">
+          To view the full document please
+          <a href="/register" class="get_url_btn">Register</a> /
+          <a href="/login" class="get_url_btn">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.rating_btn').click(function () {
+    const pdfId = $(this).attr('pdf-id')
+    const dataType = $(this).attr('data-type')
+    var obj = { id: pdfId, radtingType: dataType }
+    const token = '<%= locals.token  %>'
+    console.log(token)
+    $.ajax({
+      type: 'POST',
+      data: obj,
+      url: '/rating',
+      dataType: 'JSON',
+      headers: { Authorization: `Bearer ${token}` },
+      success: function (data) {
+        $('#likes').html(`(${data.likes})`)
+        $('#dislikes').html(`(${data.disLikes})`)
+      },
+      error: function (xhr, error) {
+        if (xhr.status === 401) {
+          $('#loginalert').modal('show')
+        }
+      },
+    })
+  })
+
+  $('.docViewBtn').click(function () {
+    var obj = { id: '<%= getFile._id %>' }
+    const token = '<%= locals.token  %>'
+
+    $.ajax({
+      type: 'POST',
+      data: obj,
+      url: '/documentView',
+      dataType: 'JSON',
+      headers: { Authorization: `Bearer ${token}` },
+      success: function (data) {
+        if (data.userOwnDoc || data.Userviews === true || data.alreadyViewed) {
+          window.open('/fullDocument/<%= getFile._id %>')
+        }
+
+        if (data.Userviews === 0) {
+          $('#planmodal').modal('show')
+        }
+        console.log(data)
+      },
+      error: function (xhr, error) {
+        console.log(xhr)
+        if (xhr.status === 401) {
+          $('#loginalert').modal('show')
+        }
+      },
+    })
+  })
+  localStorage.setItem('docID', null)
+  $('.buyPlan').click(function (e) {
+    e.preventDefault()
+    localStorage.setItem('docID', $(this).attr('doc-id'))
+    window.location.href = $(this).attr('href')
+  })
+</script>
+<%- include('partials/paymentmodal.ejs'); -%>

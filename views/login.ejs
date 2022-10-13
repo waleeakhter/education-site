@@ -1,0 +1,77 @@
+
+<%- include('partials/header.ejs'); -%>
+
+<div class="home_searchbox ">
+    
+    <div class="mask">
+        <div class="container">
+            <form class="row g-3 " id="loginForm">
+                <div class="col-md-8 col-lg-6 col-xl-5 mx-auto ">
+                    <div class="card card-body p-md-5">
+                        <div class="alert alert-danger" role="alert" id="loginAlert" style="display: none;">
+                            <p class="mb-0" style="text-align: center;">Incorrect Credential</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="logingemail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="logingemail" 
+                            name="email" aria-describedby="emailHelp" required autocomplete="new-email"> 
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="loginpassword" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="loginpassword" required autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn btn-theme form_btn">Login</button>
+
+                        <p class="card-text mt-3 text-center">Don't Have Account? <a href="/register"> Register Here </a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs'); -%>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('login');
+    if(myParam == "false") {
+        $('#loginAlert').show();
+    }
+
+            $("#loginForm").submit(function (e) {
+			   e.preventDefault();
+               const formData = {"email" : $("#logingemail").val(),
+                                "password" : $("#loginpassword").val()};
+
+                $("#loginForm .form_btn ").addClass("spinning").attr("disabled" , "disabled");
+				$.ajax({
+                        type: "POST",
+                        url: "/login",
+                        data: formData,
+                        dataType: 'JSON',
+                        success: function(res){
+					    console.log(res)
+                        if(res.message){
+                            $('#loginAlert p').html("<i class='fas fa-exclamation-triangle me-2'></i>"+res.message);
+                            $('#loginAlert').show();
+                        }
+                        
+						if(res.login === true){
+                            let lastUrl = localStorage.getItem('lastUrl');
+                            if(lastUrl){
+                                window.location.href = lastUrl;
+                            }else{
+                            window.location.href = "/";
+                            }
+						}
+
+					
+                          
+                        $("#loginForm .form_btn ").removeClass("spinning").removeAttr("disabled" , "disabled"); 
+					}
+				});
+
+			}); 
+</script>
