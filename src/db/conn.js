@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const seeders = require('./seeders')
-mongoose.connect("mongodb+srv://waleedakhter:waleed123@educational.mkbae.mongodb.net/educational?retryWrites=true&w=majority&ssl=true", {
+mongoose.connect("mongodb+srv://waleed:W%40leed32@shalansports.fvjzwul.mongodb.net/?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
